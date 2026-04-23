@@ -9,9 +9,12 @@
 <p align="center">
 A web platform for students to report infrastructure issues and for administrators to track and resolve complaints efficiently.
 </p>
+<h2 align="center">🌐 Live Demo</h2>
+
 <p align="center">
-  <a href="campuscare.benherbasheer.me" target="_blank">
-    <img src="https://img.shields.io/badge/🚀 Live Demo-Visit Now-blue?style=for-the-badge" />
+  🚀 Experience the live application here:<br/>
+  👉 <a href="https://campuscare.benherbasheer.me" target="_blank">
+    campuscare.benherbasheer.me
   </a>
 </p>
 
