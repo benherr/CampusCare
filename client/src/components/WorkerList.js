@@ -77,14 +77,6 @@ function WorkerList({ workers, onWorkerUpdated }) {
       setLoading(false);
     }
   };
-Review and Refactor 2026-04-23
-
-Refactored components to use centralized API service. Removed hardcoded localhost URLs.
-Removed unnecessary console.logs and debugging code.
-Ensured all API calls go through `src/services/api.js`.
-Updated `package.json` to include production scripts.
-Verified all dashboards (User, Admin, Worker) use the correct API end points.
-Updated `.env` guidance for production deployment.
 
   return (
     <div className="worker-list">
