@@ -1,0 +1,112 @@
+/* Add Worker Component Styles - Modern Dark Theme */
+.add-worker-container {
+  width: 100%;
+  max-width: 450px;
+  margin: 1.5rem auto;
+  padding: 2rem;
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.add-worker-container h3 {
+  font-size: 1.6rem;
+  color: #fff;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.add-worker-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.input-field {
+  width: 100%;
+  padding: 14px 16px;
+  font-size: 1rem;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--glass-border);
+  color: white;
+  border-radius: 10px;
+  outline: none;
+  transition: all var(--transition-fast);
+}
+
+.input-field:focus {
+  border-color: var(--accent-base);
+  background: rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+}
+
+.input-field::placeholder {
+  color: var(--text-muted);
+}
+
+.submit-button {
+  padding: 14px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  background: var(--accent-gradient);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.submit-button:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+
+.submit-button:active {
+  transform: translateY(0);
+}
+
+.error {
+  margin-top: 1.5rem;
+  color: var(--danger-text);
+  background: var(--danger-bg);
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  font-size: 0.9rem;
+}
+
+.success {
+  margin-top: 1.5rem;
+  color: var(--success-text);
+  background: var(--success-bg);
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  font-size: 0.9rem;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 480px) {
+  .add-worker-container {
+    padding: 1.5rem 1rem;
+    margin: 1rem;
+    max-width: calc(100% - 2rem);
+  }
+
+  .add-worker-container h3 {
+    font-size: 1.4rem;
+  }
+
+  .input-field,
+  .submit-button {
+    padding: 12px;
+  }
+}

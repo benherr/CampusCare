@@ -1,0 +1,115 @@
+/* App level resets */
+.container {
+  width: 100%;
+  max-width: 480px;
+  padding: 40px 30px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  transition: transform var(--transition-smooth);
+}
+
+h2 {
+  margin-bottom: 24px;
+  font-size: 2.5rem;
+  color: var(--text-primary);
+  font-weight: 700;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+input, select, textarea {
+  padding: 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  color: var(--text-primary);
+  background: var(--input-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  outline: none;
+  transition: all var(--transition-fast);
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--accent-base);
+  background: rgba(0, 0, 0, 0.3);
+  box-shadow: var(--accent-glow);
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--text-muted);
+}
+
+button {
+  padding: 16px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: white;
+  background: var(--accent-gradient);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all var(--transition-smooth);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+.success {
+  color: var(--success-text);
+  background: var(--success-bg);
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(52, 211, 153, 0.2);
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+p.error {
+  color: var(--danger-text);
+  background: var(--danger-bg);
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(248, 113, 113, 0.2);
+  margin-top: 10px;
+  font-size: 0.95em;
+  font-weight: 500;
+}
+
+a {
+  color: var(--accent-base);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all var(--transition-fast);
+}
+
+a:hover {
+  color: var(--btn-hover);
+  text-shadow: 0 0 8px rgba(96, 165, 250, 0.5);
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 30px 20px;
+    width: 95%;
+  }
+}
