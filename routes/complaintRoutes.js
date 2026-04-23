@@ -93,7 +93,6 @@ router.put("/:complaintId/feedback", authenticate, async (req, res) => {
                         normalizedStatus === "success";
 
     if (!isCompleted) {
-      console.log(`Debug Feedback: Blocking. Status is '${complaint.status}'`);
       return res.status(400).json({ 
         message: `You can only provide feedback for completed complaints. (Current Status: ${complaint.status || 'Unknown'})`,
         currentStatus: complaint.status 

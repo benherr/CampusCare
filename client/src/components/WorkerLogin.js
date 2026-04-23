@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "../services/api";
 import { useNavigate, Link } from "react-router-dom";
 import "./Login.css";
 
@@ -19,7 +19,7 @@ function WorkerLogin() {
     const normalizedEmail = email.trim().toLowerCase();
 
     try {
-      const response = await axios.post("http://localhost:5000/api/worker/login", {
+      const response = await api.post("/worker/login", {
         email: normalizedEmail,
         password,
       });

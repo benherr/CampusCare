@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "../services/api";
 
 function AddWorker({ setWorkerSuccess, setWorkerError, onWorkerAdded }) {
   const [workerName, setWorkerName] = useState("");
@@ -12,7 +12,6 @@ function AddWorker({ setWorkerSuccess, setWorkerError, onWorkerAdded }) {
 
   const handleAddWorker = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("adminToken");
 
     if (!workerName || !workerEmail || !workerPassword || !workerCategory) {
       setError("All fields are required");
@@ -21,11 +20,12 @@ function AddWorker({ setWorkerSuccess, setWorkerError, onWorkerAdded }) {
 
     setLoading(true);
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/admin/add-worker",
-        { name: workerName, email: workerEmail, password: workerPassword, category: workerCategory },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const response = await api.post("/admin/add-worker", { 
+        name: workerName, 
+        email: workerEmail, 
+        password: workerPassword, 
+        category: workerCategory 
+      });
 
       setSuccess(response.data.message);
       setError(null);

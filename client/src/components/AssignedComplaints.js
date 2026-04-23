@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../services/api";
 import './AssignedComplaints.css';
 
 function AssignedComplaints() {
@@ -12,19 +12,8 @@ function AssignedComplaints() {
 
   useEffect(() => {
     const fetchAssignedComplaints = async () => {
-      const token = localStorage.getItem("workerToken");
-
-      if (!token) {
-        setError("Worker not logged in");
-        return;
-      }
-
       try {
-        const response = await axios.get("http://localhost:5000/api/worker/assigned-complaints", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await api.get("/worker/assigned-complaints");
         setAssignedComplaints(response.data);
       } catch (err) {
         setError("Failed to fetch assigned complaints");
@@ -35,23 +24,8 @@ function AssignedComplaints() {
   }, []);
 
   const handleUpdateStatus = async (complaintId, newStatus) => {
-    const token = localStorage.getItem("workerToken");
-
-    if (!token) {
-      setError("Worker not logged in");
-      return;
-    }
-
     try {
-      const response = await axios.put(
-        `http://localhost:5000/api/worker/update-status/${complaintId}`,
-        { status: newStatus },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await api.put(`/worker/update-status/${complaintId}`, { status: newStatus });
       setSuccessMessage("Status updated successfully!");
 
       setAssignedComplaints((prevComplaints) =>
@@ -70,7 +44,9 @@ function AssignedComplaints() {
     if (!mediaPath) return null;
     const normalizedPath = mediaPath.replace(/\\/g, "/");
     if (normalizedPath.startsWith("http")) return normalizedPath;
-    return `http://localhost:5000/${normalizedPath}`;
+
+    const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+    return `${API_URL}/${normalizedPath}`;
   };
 
   const getStatusBadge = (status) => {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../services/api";
 import { useNavigate, useParams } from "react-router-dom";
 import { useToast } from "../context/ToastContext";
 import "./Feedbacks.css";
@@ -25,12 +25,7 @@ function GiveFeedback() {
 
   const fetchComplaintDetails = async () => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.get(`http://localhost:5000/api/complaints/${complaintId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.get(`/complaints/${complaintId}`);
       setComplaint(response.data);
     } catch (error) {
       setError("Error fetching complaint details.");
@@ -46,16 +41,7 @@ function GiveFeedback() {
     }
 
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.put(
-        `http://localhost:5000/api/complaints/${complaintId}/feedback`,
-        { text: feedbackText, rating },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await api.put(`/complaints/${complaintId}/feedback`, { text: feedbackText, rating });
       success("Feedback submitted successfully");
       setTimeout(() => {
         navigate("/dashboard"); // Redirect to the dashboard after submission

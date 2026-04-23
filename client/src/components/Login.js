@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "../services/api";
 import { useNavigate, Link } from "react-router-dom";
 import "./Login.css";
 
@@ -19,7 +19,7 @@ function Login() {
     try {
       // Check if admin credentials
       if (email.trim().toLowerCase() === "admin@gmail.com" && password === "admin") {
-        const response = await axios.post("http://localhost:5000/api/admin/login", {
+        const response = await api.post("/admin/login", {
           username: "admin",
           password: "admin",
         });
@@ -32,7 +32,7 @@ function Login() {
         }, 1000);
       } else {
         // Regular user login only
-        const response = await axios.post("http://localhost:5000/api/users/login", {
+        const response = await api.post("/users/login", {
           email,
           password,
         });

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "../services/api";
 
 function WorkerList({ workers, onWorkerUpdated }) {
   const [editingWorker, setEditingWorker] = useState(null);
@@ -34,7 +34,6 @@ function WorkerList({ workers, onWorkerUpdated }) {
 
   const handleEditSubmit = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("adminToken");
     setLoading(true);
 
     try {
@@ -49,11 +48,7 @@ function WorkerList({ workers, onWorkerUpdated }) {
         updateData.password = editForm.password;
       }
 
-      await axios.put(
-        `http://localhost:5000/api/admin/update-worker/${editingWorker._id}`,
-        updateData,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await api.put(`/admin/update-worker/${editingWorker._id}`, updateData);
 
       setEditingWorker(null);
       if (onWorkerUpdated) onWorkerUpdated();
@@ -69,14 +64,10 @@ function WorkerList({ workers, onWorkerUpdated }) {
   };
 
   const handleDeleteConfirm = async () => {
-    const token = localStorage.getItem("adminToken");
     setLoading(true);
 
     try {
-      await axios.delete(
-        `http://localhost:5000/api/admin/delete-worker/${deleteConfirm._id}`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await api.delete(`/admin/delete-worker/${deleteConfirm._id}`);
 
       setDeleteConfirm(null);
       if (onWorkerUpdated) onWorkerUpdated();
@@ -86,6 +77,14 @@ function WorkerList({ workers, onWorkerUpdated }) {
       setLoading(false);
     }
   };
+Review and Refactor 2026-04-23
+
+Refactored components to use centralized API service. Removed hardcoded localhost URLs.
+Removed unnecessary console.logs and debugging code.
+Ensured all API calls go through `src/services/api.js`.
+Updated `package.json` to include production scripts.
+Verified all dashboards (User, Admin, Worker) use the correct API end points.
+Updated `.env` guidance for production deployment.
 
   return (
     <div className="worker-list">

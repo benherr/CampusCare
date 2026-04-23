@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../services/api";
 import "./Feedbacks.css";
 
 function Feedbacks() {
@@ -11,19 +11,8 @@ function Feedbacks() {
 
   useEffect(() => {
     const fetchCompletedComplaints = async () => {
-      const token = localStorage.getItem("workerToken");
-
-      if (!token) {
-        setError("Worker not logged in");
-        return;
-      }
-
       try {
-        const response = await axios.get("http://localhost:5000/api/worker/completed-complaints", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await api.get("/worker/completed-complaints");
         setCompletedComplaints(response.data);
       } catch (err) {
         setError("Failed to fetch completed complaints");
@@ -43,22 +32,8 @@ function Feedbacks() {
       return;
     }
 
-    const token = localStorage.getItem("workerToken");
-    if (!token) {
-      setError("Worker not logged in");
-      return;
-    }
-
     try {
-      const response = await axios.put(
-        `http://localhost:5000/api/worker/feedback/${selectedComplaintId}`,
-        { feedback: { message: feedback } },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await api.put(`/worker/feedback/${selectedComplaintId}`, { feedback: { message: feedback } });
 
       setSuccessMessage("Feedback submitted successfully!");
       setFeedback("");  // Clear feedback field

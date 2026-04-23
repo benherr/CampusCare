@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "../services/api";
 import { useToast } from "../context/ToastContext";
 import './complaintForm.css';
 
@@ -64,13 +64,7 @@ function ComplaintForm() {
 
     try {
       setLoading(true);
-      const token = localStorage.getItem("token");
-      await axios.post("http://localhost:5000/api/complaints/submit", formData, {
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      await api.post("/complaints/submit", formData);
 
       success("Complaint submitted successfully!");
       setTitle("");

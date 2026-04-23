@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../services/api";
 import './adminDashboard.css';
 import * as XLSX from 'xlsx';
 import AddWorker from "./AddWorker";
@@ -35,7 +35,9 @@ function AdminDashboard() {
     if (!mediaPath) return null;
     const normalizedPath = mediaPath.replace(/\\/g, "/");
     if (normalizedPath.startsWith("http")) return normalizedPath;
-    return `http://localhost:5000/${normalizedPath}`;
+    
+    const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+    return `${API_URL}/${normalizedPath}`;
   };
 
   const stats = {
@@ -51,23 +53,11 @@ function AdminDashboard() {
   }, []);
 
   const fetchData = async () => {
-    const token = localStorage.getItem("adminToken");
-
-    if (!token) {
-      setError("Admin not logged in");
-      setLoading(false);
-      return;
-    }
-
     try {
-      const complaintsResponse = await axios.get("http://localhost:5000/api/admin/complaints", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const complaintsResponse = await api.get("/admin/complaints");
       setComplaints(complaintsResponse.data);
 
-      const workersResponse = await axios.get("http://localhost:5000/api/admin/workers", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const workersResponse = await api.get("/admin/workers");
       setWorkers(workersResponse.data);
     } catch (err) {
       setError("Failed to fetch data. Please try again later.");
@@ -77,14 +67,10 @@ function AdminDashboard() {
   };
 
   const handleAssignWorker = async (complaintId, workerId) => {
-    const token = localStorage.getItem("adminToken");
     setAssigningWorker(true);
     
     try {
-      await axios.post("http://localhost:5000/api/admin/assign-worker", 
-        { complaintId, workerId },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await api.post("/admin/assign-worker", { complaintId, workerId });
       fetchData();
       setSelectedComplaint(null);
     } catch (err) {

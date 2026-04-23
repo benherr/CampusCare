@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../services/api";
 import ComplaintForm from "./ComplaintForm";
 import ComplaintHistory from "./ComplaintHistory";
 import "./Dashboard.css";
@@ -26,36 +26,28 @@ function Dashboard() {
       navigate("/login");
     } else {
       setIsLoggedIn(true);
-      fetchStats(token);
+      fetchStats();
     }
   }, [navigate]);
 
-  const fetchStats = async (token) => {
+  const fetchStats = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/users/complaints", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.get("/users/complaints");
       const complaints = response.data || [];
       setStats({
         total: complaints.length,
         pending: complaints.filter(c => c.status === 'Pending' || !c.status).length,
         inProgress: complaints.filter(c => c.status === 'In Progress').length,
-        resolved: complaints.filter(c => c.status === 'Resolved' || c.status === 'Completed').length,
+        resolved: complaints.filter(c => ['Resolved', 'Completed', 'Finished'].includes(c.status)).length,
       });
 
       // Also fetch user profile for name display
-      const profileResponse = await axios.get("http://localhost:5000/api/users/me", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const profileResponse = await api.get("/users/me");
       if (profileResponse.data && profileResponse.data.name) {
         setUserName(profileResponse.data.name);
       }
     } catch (error) {
-      console.error("Error fetching dashboard data:", error);
+      // Quietly handle error
     } finally {
       setLoadingStats(false);
     }

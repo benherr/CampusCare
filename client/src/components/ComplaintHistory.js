@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../services/api";
 import { useNavigate, Link } from "react-router-dom";
 import { useToast } from "../context/ToastContext";
 import "./ComplaintHistory.css";
@@ -21,7 +21,7 @@ function ComplaintHistory({ initialStatusFilter = "all" }) {
     if (!token) {
       navigate("/login");
     } else {
-      fetchComplaints(token);
+      fetchComplaints();
     }
   }, [navigate]);
 
@@ -34,13 +34,9 @@ function ComplaintHistory({ initialStatusFilter = "all" }) {
     filterComplaints();
   }, [complaints, searchTerm, statusFilter, departmentFilter, categoryFilter]);
 
-  const fetchComplaints = async (token) => {
+  const fetchComplaints = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/users/complaints", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.get("/users/complaints");
       setComplaints(response.data || []);
       setLoading(false);
     } catch (error) {

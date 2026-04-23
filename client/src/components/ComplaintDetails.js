@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../services/api";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useToast } from "../context/ToastContext";
 import "./ComplaintDetails.css";
@@ -18,16 +18,12 @@ function ComplaintDetails() {
       navigate("/login");
       return;
     }
-    fetchComplaintDetails(token);
+    fetchComplaintDetails();
   }, [id, navigate]);
 
-  const fetchComplaintDetails = async (token) => {
+  const fetchComplaintDetails = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/complaints/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.get(`/complaints/${id}`);
       setComplaint(response.data);
       setLoading(false);
     } catch (err) {
@@ -51,19 +47,18 @@ function ComplaintDetails() {
 
   const getStatusClass = (status) => {
     const s = (status || "Pending").toLowerCase();
-    if (s === "resolved") return "status-resolved";
+    if (s === "resolved" || s === "completed") return "status-resolved";
     if (s === "in progress") return "status-progress";
     return "status-pending";
   };
 
   const getMediaUrl = (mediaPath) => {
     if (!mediaPath) return null;
-    
-    // Normalize path to fix windows backward slashes
     const normalizedPath = mediaPath.replace(/\\/g, "/");
-    
     if (normalizedPath.startsWith("http")) return normalizedPath;
-    return `http://localhost:5000/${normalizedPath}`;
+    
+    const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+    return `${API_URL}/${normalizedPath}`;
   };
 
   if (loading) {
